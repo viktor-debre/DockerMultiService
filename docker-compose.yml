@@ -7,7 +7,7 @@ services:
       context: ./DockerDotNetService
       dockerfile: Dockerfile
     ports:
-      - "16060:6060"
+      - "16080:6080"
 
   docker-java:
     image: docker-java-service
@@ -16,4 +16,4 @@ services:
       context: ./DockerJavaService
       dockerfile: Dockerfile
     ports:
-      - "16070:6070"
+      - "16060:6060"

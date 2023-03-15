@@ -1,0 +1,19 @@
+version: "3.3"
+services:
+  docker-dotnet:
+    image: docker-dotnet-service
+    container_name: docker-dotnet-service
+    build:
+      context: ./DockerDotNetService
+      dockerfile: Dockerfile
+    ports:
+      - "16060:6060"
+
+  docker-java:
+    image: docker-java-service
+    container_name: docker-java-service
+    build:
+      context: ./DockerJavaService
+      dockerfile: Dockerfile
+    ports:
+      - "16070:6070"

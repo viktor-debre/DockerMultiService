@@ -20,7 +20,7 @@ namespace DockerDotNetService.Controllers
         }
 
         [HttpPost]
-        [ActionName("sha256")]
+        [ActionName("sha-256")]
         public ActionResult<HashingResponce> HashBySHA256([FromBody] HashingData request)
         {
             var array = request.array;

@@ -5,7 +5,7 @@ using System.Diagnostics;
 namespace DockerDotNetService.Controllers
 {
     [ApiController]
-    [Route("api/[controller]/[action]")]
+    [Route("[action]")]
     public class SortingController : ControllerBase
     {
         private readonly ILogger<SortingController> _logger;

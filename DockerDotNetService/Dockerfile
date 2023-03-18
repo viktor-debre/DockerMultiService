@@ -5,7 +5,7 @@ WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Development
 
-EXPOSE 6080
+EXPOSE 80
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src

@@ -1,44 +1,85 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DockerDotNetService.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Diagnostics;
 
 namespace DockerDotNetService.Controllers
 {
     [ApiController]
+    [Route("api/[controller]/[action]")]
     public class SortingController : ControllerBase
     {
         private readonly ILogger<SortingController> _logger;
 
-        public SortingController(ILogger<SortingController> logger)
+        public SortingController(
+            ILogger<SortingController> logger)
         {
             _logger = logger;
         }
 
         [HttpPost]
-        [Route("api/sorting/bubble")]
-        public IEnumerable<int> SortBubble([FromBody] List<int> array)
+        [ActionName("bubbleSort")]
+        public ActionResult<SortingResponce> SortBubble([FromBody] SortData request)
         {
+            var array = request.array;
+            var timer = new Stopwatch();
+            timer.Start();
             BubbleSort(array);
-            return array;
+            timer.Stop();
+            long frequency = Stopwatch.Frequency;
+            long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
+            var responce = new SortingResponce()
+            {
+                array = array.ToList(),
+                timeElapsed = timer.ElapsedTicks * nanosecPerTick,
+            };
+
+            return Ok(responce);
         }
 
         [HttpPost]
-        [Route("api/sorting/heap")]
-        public IEnumerable<int> SortHeap([FromBody] List<int> array)
+        [ActionName("heapSort")]
+        public ActionResult<SortingResponce> SortHeap([FromBody] SortData request)
         {
+            var array = request.array;
+            var timer = new Stopwatch();
+            timer.Start();
             HeapSort(array);
-            return array;
+            timer.Stop();
+            long frequency = Stopwatch.Frequency;
+            long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
+            var responce = new SortingResponce()
+            {
+                array = array.ToList(),
+                timeElapsed = timer.ElapsedTicks * nanosecPerTick,
+            };
+
+            return Ok(responce);
         }
 
         [HttpPost]
-        [Route("api/sorting/quick")]
-        public IEnumerable<int> SortQuick([FromBody] List<int> array)
+        [ActionName("quickSort")]
+        public ActionResult<SortingResponce> SortQuick([FromBody] SortData request)
         {
-            QuickSort(array, 0, array.Count - 1);
-            return array;
+            var array = request.array;
+            var timer = new Stopwatch();
+            timer.Start();
+            QuickSort(array, 0, array.Length - 1);
+            timer.Stop();
+            long frequency = Stopwatch.Frequency;
+            long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
+            var responce = new SortingResponce()
+            {
+                array = array.ToList(),
+                timeElapsed = timer.ElapsedTicks * nanosecPerTick,
+            };
+
+            return Ok(responce);
         }
 
-        public void BubbleSort(List<int> array)
+
+        public void BubbleSort(int[] array)
         {
-            int n = array.Count;
+            int n = array.Length;
             for (int i = 0; i < n - 1; i++)
             {
                 for (int j = 0; j < n - i - 1; j++)
@@ -54,9 +95,9 @@ namespace DockerDotNetService.Controllers
             }
         }
 
-        public void HeapSort(List<int> list)
+        public void HeapSort(int[] list)
         {
-            int n = list.Count;
+            int n = list.Length;
 
             // Build heap (rearrange list)
             for (int i = n / 2 - 1; i >= 0; i--)
@@ -75,9 +116,7 @@ namespace DockerDotNetService.Controllers
             }
         }
 
-        // To heapify a subtree rooted with node i which is
-        // an index in list. n is size of heap
-        public void Heapify(List<int> list, int n, int i)
+        private void Heapify(int[] list, int n, int i)
         {
             int largest = i; // Initialize largest as root
             int left = 2 * i + 1; // left = 2*i + 1
@@ -103,37 +142,41 @@ namespace DockerDotNetService.Controllers
             }
         }
 
-        public void QuickSort(List<int> array, int low, int high)
+        public int[] QuickSort(int[] array, int left, int right)
         {
-            if (low < high)
+            int i = left, j = right;
+            int pivot = array[left + (right - left) / 2];
+
+            while (i <= j)
             {
-                int pi = Partition(array, low, high);
-
-                QuickSort(array, low, pi - 1);
-                QuickSort(array, pi + 1, high);
-            }
-        }
-
-        static int Partition(List<int> array, int low, int high)
-        {
-            int pivot = array[high];
-            int i = (low - 1);
-
-            for (int j = low; j <= high - 1; j++)
-            {
-                if (array[j] < pivot)
+                while (array[i] < pivot)
                 {
                     i++;
+                }
+                while (array[j] > pivot)
+                {
+                    j--;
+                }
+                if (i <= j)
+                {
                     int temp = array[i];
                     array[i] = array[j];
                     array[j] = temp;
+                    i++;
+                    j--;
                 }
             }
 
-            int temp1 = array[i + 1];
-            array[i + 1] = array[high];
-            array[high] = temp1;
-            return (i + 1);
+            if (left < j)
+            {
+                QuickSort(array, left, j);
+            }
+            if (i < right)
+            {
+                QuickSort(array, i, right);
+            }
+
+            return array;
         }
     }
 }

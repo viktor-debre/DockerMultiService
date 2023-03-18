@@ -1,4 +1,4 @@
-﻿namespace DockerDotNetService.Models
+﻿namespace DockerDotNetService.Models.Sorting
 {
     public class SortData
     {

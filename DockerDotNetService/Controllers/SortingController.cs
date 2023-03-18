@@ -1,4 +1,5 @@
-﻿using DockerDotNetService.Models;
+﻿
+using DockerDotNetService.Models.Sorting;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -18,7 +19,7 @@ namespace DockerDotNetService.Controllers
 
         [HttpPost]
         [ActionName("bubbleSort")]
-        public ActionResult<SortingResponce> SortBubble([FromBody] SortData request)
+        public ActionResult<SortingResponse> SortBubble([FromBody] SortData request)
         {
             var array = request.array;
             var timer = new Stopwatch();
@@ -27,9 +28,9 @@ namespace DockerDotNetService.Controllers
             timer.Stop();
             long frequency = Stopwatch.Frequency;
             long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
-            var responce = new SortingResponce()
+            var responce = new SortingResponse()
             {
-                array = array.ToList(),
+                array = array,
                 timeElapsed = timer.ElapsedTicks * nanosecPerTick,
             };
 
@@ -38,7 +39,7 @@ namespace DockerDotNetService.Controllers
 
         [HttpPost]
         [ActionName("heapSort")]
-        public ActionResult<SortingResponce> SortHeap([FromBody] SortData request)
+        public ActionResult<SortingResponse> SortHeap([FromBody] SortData request)
         {
             var array = request.array;
             var timer = new Stopwatch();
@@ -47,9 +48,9 @@ namespace DockerDotNetService.Controllers
             timer.Stop();
             long frequency = Stopwatch.Frequency;
             long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
-            var responce = new SortingResponce()
+            var responce = new SortingResponse()
             {
-                array = array.ToList(),
+                array = array,
                 timeElapsed = timer.ElapsedTicks * nanosecPerTick,
             };
 
@@ -58,7 +59,7 @@ namespace DockerDotNetService.Controllers
 
         [HttpPost]
         [ActionName("quickSort")]
-        public ActionResult<SortingResponce> SortQuick([FromBody] SortData request)
+        public ActionResult<SortingResponse> SortQuick([FromBody] SortData request)
         {
             var array = request.array;
             var timer = new Stopwatch();
@@ -67,9 +68,9 @@ namespace DockerDotNetService.Controllers
             timer.Stop();
             long frequency = Stopwatch.Frequency;
             long nanosecPerTick = (1000L * 1000L * 1000L) / frequency;
-            var responce = new SortingResponce()
+            var responce = new SortingResponse()
             {
-                array = array.ToList(),
+                array = array,
                 timeElapsed = timer.ElapsedTicks * nanosecPerTick,
             };
 

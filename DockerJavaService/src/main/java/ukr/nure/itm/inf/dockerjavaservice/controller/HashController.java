@@ -15,7 +15,7 @@ public class HashController {
         this.hashService = hashService;
     }
 
-    @PostMapping("/sha256")
+    @PostMapping("/sha-256")
     @ResponseBody
     public HashData sha256Hashing(@RequestBody HashData data) {
         long startTime = System.nanoTime();
@@ -25,7 +25,7 @@ public class HashController {
         return new HashData((endTime - startTime), array);
     }
 
-    @PostMapping("/sha3256")
+    @PostMapping("/sha3-256")
     @ResponseBody
     public HashData sha3256Hashing(@RequestBody HashData data) {
         long startTime = System.nanoTime();
@@ -35,7 +35,7 @@ public class HashController {
         return new HashData((endTime - startTime), array);
     }
 
-    @PostMapping("/sha1")
+    @PostMapping("/sha-1")
     @ResponseBody
     public HashData sha1Hashing(@RequestBody HashData data) {
         long startTime = System.nanoTime();

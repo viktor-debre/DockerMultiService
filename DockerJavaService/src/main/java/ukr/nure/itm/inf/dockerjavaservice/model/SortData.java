@@ -10,6 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SortData {
-    private int[] array;
     private long timeElapsed;
+    private int[] array;
 }

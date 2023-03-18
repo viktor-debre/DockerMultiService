@@ -23,7 +23,7 @@ public class SortController {
         final int[] array = sortService.bubbleSort(data.getArray());
         long endTime = System.nanoTime();
 
-        return new SortData(array, (endTime - startTime));
+        return new SortData((endTime - startTime), array);
     }
 
     @PostMapping("/heapSort")
@@ -33,7 +33,7 @@ public class SortController {
         final int[] array = sortService.heapSort(data.getArray());
         long endTime = System.nanoTime();
 
-        return new SortData(array, (endTime - startTime));
+        return new SortData((endTime - startTime), array);
     }
 
     @PostMapping("/quickSort")
@@ -43,6 +43,6 @@ public class SortController {
         final int[] array = sortService.quickSort(data.getArray(), 0, data.getArray().length - 1);
         long endTime = System.nanoTime();
 
-        return new SortData(array, (endTime - startTime));
+        return new SortData((endTime - startTime), array);
     }
 }

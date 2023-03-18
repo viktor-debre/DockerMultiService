@@ -34,7 +34,7 @@ public class SortService {
         return array;
     }
 
-    public int[] quickSort(int[] array, int left, int right) {
+    public int[] quickSort(final int[] array, final int left, final int right) {
         int i = left, j = right;
         int pivot = array[left + (right - left) / 2];
 

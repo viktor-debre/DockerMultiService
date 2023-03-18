@@ -18,7 +18,7 @@ public class SortController {
 
     @PostMapping("/bubbleSort")
     @ResponseBody
-    public SortData bubbleSort(@RequestBody SortData data) {
+    public SortData bubbleSort(@RequestBody final SortData data) {
         long startTime = System.nanoTime();
         final int[] array = sortService.bubbleSort(data.getArray());
         long endTime = System.nanoTime();
@@ -28,7 +28,7 @@ public class SortController {
 
     @PostMapping("/heapSort")
     @ResponseBody
-    public SortData heapSort(@RequestBody SortData data) {
+    public SortData heapSort(@RequestBody final SortData data) {
         long startTime = System.nanoTime();
         final int[] array = sortService.heapSort(data.getArray());
         long endTime = System.nanoTime();
@@ -38,7 +38,7 @@ public class SortController {
 
     @PostMapping("/quickSort")
     @ResponseBody
-    public SortData quickSort(@RequestBody SortData data) {
+    public SortData quickSort(@RequestBody final SortData data) {
         long startTime = System.nanoTime();
         final int[] array = sortService.quickSort(data.getArray(), 0, data.getArray().length - 1);
         long endTime = System.nanoTime();

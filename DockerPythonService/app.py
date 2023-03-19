@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify
 import time
+import hashlib
 
 app = Flask(__name__)
 app.config['JSON_SORT_KEYS'] = False
@@ -106,6 +107,70 @@ def quick_sort_f(arr, low, high):
 
         quick_sort_f(arr, low, pi - 1)
         quick_sort_f(arr, pi + 1, high)
+
+
+@app.route('/sha-256', methods=['POST'])
+def hash_sha256():
+    array = request.json.get('array')
+    start_time_ns = time.perf_counter_ns()
+    result = hash_sha256_f(array)
+    elapsed_time_ns = time.perf_counter_ns() - start_time_ns
+
+    data = {
+        "timeElapsed": elapsed_time_ns,
+        "array": result
+    }
+
+    return jsonify(data)
+
+def hash_sha256_f(strings):
+    hashed_strings = []
+    for s in strings:
+        hashed_str = hashlib.sha256(str.encode(s)).hexdigest()
+        hashed_strings.append(hashed_str)
+    return hashed_strings
+
+@app.route('/sha3-256', methods=['POST'])
+def hash_sha3_256():
+    array = request.json.get('array')
+    start_time_ns = time.perf_counter_ns()
+    result = hash_sha3_256_f(array)
+    elapsed_time_ns = time.perf_counter_ns() - start_time_ns
+
+    data = {
+        "timeElapsed": elapsed_time_ns,
+        "array": result
+    }
+
+    return jsonify(data)
+
+def hash_sha3_256_f(strings):
+    hashed_strings = []
+    for s in strings:
+        hashed_str = hashlib.sha3_256(str.encode(s)).hexdigest()
+        hashed_strings.append(hashed_str)
+    return hashed_strings
+
+@app.route('/sha-1', methods=['POST'])
+def hash_sha1():
+    array = request.json.get('array')
+    start_time_ns = time.perf_counter_ns()
+    result = hash_sha1_f(array)
+    elapsed_time_ns = time.perf_counter_ns() - start_time_ns
+
+    data = {
+        "timeElapsed": elapsed_time_ns,
+        "array": result
+    }
+
+    return jsonify(data)
+
+def hash_sha1_f(strings):
+    hashed_strings = []
+    for s in strings:
+        hashed_str = hashlib.sha1(str.encode(s)).hexdigest()
+        hashed_strings.append(hashed_str)
+    return hashed_strings
 
 if __name__ == '__main__':
     app.run()

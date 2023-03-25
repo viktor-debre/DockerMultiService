@@ -172,5 +172,45 @@ def hash_sha1_f(strings):
         hashed_strings.append(hashed_str)
     return hashed_strings
 
+
+@app.route('/tax', methods=['POST'])
+def calculate_federal_income_tax():
+    income = request.json.get('income')
+    status = request.json.get('status')
+    tax = calculate_federal_income_tax(income,status)
+    
+    data = {
+        "tax": tax
+    }
+
+    return jsonify(data)
+
+def calculate_federal_income_tax(income, status):
+    tax = 0
+    rate = [10, 12, 22, 24, 32, 35, 37]
+    single = [0, 10275, 41775, 89075, 170050, 215950, 539900]
+    married_joint = [0, 20550, 83550, 178150, 340100, 431900, 647850]
+    married_separate = [0, 10275, 41775, 89075, 170050, 215950, 323925]
+    head_of_household = [0, 13250, 50400, 130150, 210800, 413350, 441000]
+
+    if status == 1:
+        brackets = single
+    elif status == 2:
+        brackets = married_joint
+    elif status == 3:
+        brackets = married_separate
+    elif status == 4:
+        brackets = head_of_household
+    else:
+        return -1
+
+    for i in range(len(rate) - 1, -1, -1):
+        if income > brackets[i]:
+            tax += (income - brackets[i]) * rate[i] / 100
+            income = brackets[i]
+
+    return tax
+
+
 if __name__ == '__main__':
     app.run()

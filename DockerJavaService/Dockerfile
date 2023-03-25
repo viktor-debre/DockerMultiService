@@ -1,9 +1,18 @@
-FROM openjdk:17
+FROM maven:3.8.4-openjdk-17
 
-RUN mkdir -p /app/app-web
+WORKDIR /app/app-web
 
-COPY target/DockerJavaService-0.0.1-SNAPSHOT.jar /app/app-web/DockerJavaService-0.0.1-SNAPSHOT.jar
+COPY . .
+
+RUN mvn clean install -DskipTests
+RUN mvn dependency:copy-dependencies
+
+RUN mkdir -p /app/app-web/classes
+RUN mkdir -p /app/app-web/libs
+
+RUN cp -R target/classes/* /app/app-web/classes/
+RUN cp -R target/dependency/* /app/app-web/libs/
 
 EXPOSE 6060
 
-ENTRYPOINT ["java", "-jar", "/app/app-web/DockerJavaService-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-cp", "/app/app-web/classes:/app/app-web/libs/*", "ukr.nure.itm.inf.dockerjavaservice.DockerJavaServiceApplication"]
